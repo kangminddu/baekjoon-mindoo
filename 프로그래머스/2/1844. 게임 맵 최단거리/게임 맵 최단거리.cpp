@@ -1,33 +1,34 @@
 #include<vector>
 #include <queue>
+
 using namespace std;
+
+
 
 int solution(vector<vector<int> > maps)
 {
-    int n = maps.size(); // 행 개수
-    int m = maps[0].size(); // 열 개수
+    int n = maps.size();
+    int m = maps[0].size();
+    int dr[4] = {-1,1,0,0};
+    int dc[4] = {0,0,-1,1};
     
-    int dx[4] = {1,-1,0,0};
-    int dy[4] = {0,0,1,-1};
-    vector<vector<int>> dist(n, vector<int>(m,-1)); // 전부 -1로 시작
-    queue<pair<int,int>> q;
-    dist[0][0] = 1; // 출발 칸은 1번째 칸
+    vector<vector<int>> dist(n, vector<int>(m,0));
+    queue<pair<int, int>> q;
     q.push({0,0});
+    dist[0][0] = 1;
     
     while (!q.empty()){
-        int x = q.front().first;
-        int y = q.front().second;
+        int r = q.front().first;
+        int c = q.front().second;
         q.pop();
-        
         for (int d = 0; d < 4; d++){
-            int nx = x + dx[d];
-            int ny = y + dy[d];
-            if (nx < 0 || nx >= n || ny < 0 || ny >= m) continue; // 맵 밖
-            if (maps[nx][ny] == 0) continue; // 벽
-            if (dist[nx][ny] != -1) continue; // 이미 감
-            dist[nx][ny] = dist[x][y] + 1;
-            q.push({nx,ny});
+            int nr = r + dr[d];
+            int nc = c + dc[d];
+            if (nr < 0 || nr >= n || nc < 0 || nc >= m) continue;
+            if (maps[nr][nc] == 0 || dist[nr][nc] != 0) continue;
+            dist[nr][nc] = dist[r][c] + 1;
+            q.push({nr,nc});
         }
     }
-    return dist[n-1][m-1];
+    return dist[n-1][m-1] == 0 ? -1: dist[n-1][m-1];
 }
