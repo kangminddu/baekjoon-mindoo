@@ -1,16 +1,16 @@
-#include <string>
+#include<string>
+#include <iostream>
 #include <stack>
-
 using namespace std;
 
-bool solution(string s){
+bool solution(string s)
+{
     stack<char> st;
     
     for (char c : s){
         if (c == '('){
             st.push(c);
-        }
-        else{
+        }else{
             if (st.empty()){
                 return false;
             }
